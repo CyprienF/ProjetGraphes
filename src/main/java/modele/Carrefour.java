@@ -63,10 +63,15 @@ public class Carrefour {
     public void setCoordY(double coordY) {
         this.coordY = coordY;
     }
-    
+
     public void addCarrefoursVoisin( Carrefour c){
         this.carrefoursVoisin.add(c);
     }
+    
+    //function that will return the Distance beetween two Intersections
+    public double getDistanceBetweenCarrefours(Carrefour c1){
 
 
+        return 0.0;
+    }
 }
