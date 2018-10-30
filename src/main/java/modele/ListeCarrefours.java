@@ -3,10 +3,10 @@ package modele;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListeCarrefour {
+public class ListeCarrefours {
     private List<Carrefour> mesCarrefours;
 
-    public ListeCarrefour() {
+    public ListeCarrefours() {
         this.mesCarrefours = new ArrayList<Carrefour>();
     }
 
