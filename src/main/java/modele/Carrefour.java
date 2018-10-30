@@ -30,11 +30,11 @@ public class Carrefour {
     }
 
     public String getLibellecarrefour() {
-        return libellecarrefour;
+        return libelleCarrefour;
     }
 
     public void setLibellecarrefour(String libellecarrefour) {
-        this.libellecarrefour = libellecarrefour;
+        this.libelleCarrefour = libellecarrefour;
     }
 
     public List<String> getIdentifiantTroncon() {
@@ -66,17 +66,16 @@ public class Carrefour {
     }
 
     public void addCarrefourVoisin(Carrefour carrefour){
-        this.carrefourVoisin.add(carrefour);
+        this.carrefoursVoisins.add(carrefour);
     }
 
     /**
      * Return the distance beetween two intersections
      *
-     * @param c1
+     * @param carrefour
      * @return
      */
     public double getDistanceBetweenCarrefours(Carrefour carrefour){
-
         return 0.0;
     }
 }
