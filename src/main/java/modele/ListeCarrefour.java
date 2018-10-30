@@ -10,22 +10,23 @@ public class ListeCarrefour {
         this.mesCarrefours = new ArrayList<Carrefour>();
     }
 
-
-    //function that read all file and save all the intersections
-    public boolean initializeListCarrefour(){
-
-
-        return true;
-    }
-
-
-    //function that read all list to set the relation between intersections
-    public boolean setTableAdjacency(){
-
+    /**
+     * Read file and save all the intersections
+     *
+     * @return
+     */
+    public boolean initialisationListeCarrefours() {
 
         return true;
     }
 
+    /**
+     * Read list to set the relation between intersections
+     *
+     * @return
+     */
+    public boolean creationMatriceAdjacence() {
 
-
+        return true;
+    }
 }
