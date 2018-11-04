@@ -1,12 +1,16 @@
 package modele;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Carrefour {
     private int id;
     private double coordX;
     private double coordY;
+
+    private List<Carrefour> plusCourtChemin = new LinkedList<Carrefour>();
+    private Integer distanceDeLaSource = Integer.MAX_VALUE;
+    private Map<Carrefour, Integer> carrefoursAdjacents = new HashMap<Carrefour, Integer>();
+
     private String libelleCarrefour;
     private List<String> identifiantTroncon;
     private List<Carrefour> carrefoursVoisins;
@@ -19,6 +23,10 @@ public class Carrefour {
         this.identifiantTroncon = new ArrayList<String>();
         this.carrefoursVoisins = new ArrayList<Carrefour>();
         this.setIdentifiantTroncon(identifiantTroncon);
+    }
+
+    public void ajouterCarrefourAdjacent(Carrefour voisin, int distance) {
+        this.carrefoursAdjacents.put(voisin, distance);
     }
 
     public int getId() {
@@ -67,6 +75,30 @@ public class Carrefour {
 
     public void addCarrefourVoisin(Carrefour carrefour){
         this.carrefoursVoisins.add(carrefour);
+    }
+
+    public List<Carrefour> getPlusCourtChemin() {
+        return plusCourtChemin;
+    }
+
+    public void setPlusCourtChemin(List<Carrefour> plusCourtChemin) {
+        this.plusCourtChemin = plusCourtChemin;
+    }
+
+    public Integer getDistanceDeLaSource() {
+        return distanceDeLaSource;
+    }
+
+    public void setDistanceDeLaSource(Integer distanceDeLaSource) {
+        this.distanceDeLaSource = distanceDeLaSource;
+    }
+
+    public Map<Carrefour, Integer> getCarrefoursAdjacents() {
+        return carrefoursAdjacents;
+    }
+
+    public void setCarrefoursAdjacents(Map<Carrefour, Integer> carrefoursAdjacents) {
+        this.carrefoursAdjacents = carrefoursAdjacents;
     }
 
     /**
