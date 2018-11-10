@@ -5,20 +5,20 @@ import java.util.List;
 
 public class Carrefour {
     private int id;
-    private String libellecarrefour;
-    private List<String> identifiantTrancon;
     private double coordX;
     private double coordY;
-    private List<Carrefour> carrefoursVoisin;
+    private String libelleCarrefour;
+    private List<String> identifiantTroncon;
+    private List<Carrefour> carrefoursVoisins;
 
-    public Carrefour(int id, String libellecarrefour, String identifiantTrancon, double coordX, double coordY) {
-        this.identifiantTrancon = new ArrayList<String>();
-        carrefoursVoisin=new ArrayList<Carrefour>();
+    public Carrefour(int id, double coordX, double coordY, String libelleCarrefour, String identifiantTroncon) {
         this.id = id;
-        this.libellecarrefour = libellecarrefour;
-        this.setIdentifiantTrancon(identifiantTrancon);
         this.coordX = coordX;
         this.coordY = coordY;
+        this.libelleCarrefour = libelleCarrefour;
+        this.identifiantTroncon = new ArrayList<String>();
+        this.carrefoursVoisins = new ArrayList<Carrefour>();
+        this.setIdentifiantTroncon(identifiantTroncon);
     }
 
     public int getId() {
@@ -30,21 +30,22 @@ public class Carrefour {
     }
 
     public String getLibellecarrefour() {
-        return libellecarrefour;
+        return libelleCarrefour;
     }
 
     public void setLibellecarrefour(String libellecarrefour) {
-        this.libellecarrefour = libellecarrefour;
+        this.libelleCarrefour = libellecarrefour;
     }
 
-    public List<String> getIdentifiantTrancon() {
-        return identifiantTrancon;
+    public List<String> getIdentifiantTroncon() {
+        return identifiantTroncon;
     }
 
-    public void setIdentifiantTrancon(String identifiantTrancon) {
-        String[] labels= libellecarrefour.split("|");
-        for (String label:labels) {
-            this.identifiantTrancon.add(label);
+    public void setIdentifiantTroncon(String identifiantTroncon) {
+        String[] labels = libelleCarrefour.split("|");
+
+        for (String label : labels) {
+            this.identifiantTroncon.add(label);
         }
     }
 
@@ -64,14 +65,17 @@ public class Carrefour {
         this.coordY = coordY;
     }
 
-    public void addCarrefoursVoisin( Carrefour c){
-        this.carrefoursVoisin.add(c);
+    public void addCarrefourVoisin(Carrefour carrefour){
+        this.carrefoursVoisins.add(carrefour);
     }
 
-    //function that will return the Distance beetween two Intersections
-    public double getDistanceBetweenCarrefours(Carrefour c1){
-
-
+    /**
+     * Return the distance beetween two intersections
+     *
+     * @param carrefour
+     * @return
+     */
+    public double getDistanceBetweenCarrefours(Carrefour carrefour){
         return 0.0;
     }
 }
