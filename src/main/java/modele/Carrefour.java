@@ -67,7 +67,7 @@ public class Carrefour {
     public void addCarrefoursVoisin( Carrefour c){
         this.carrefoursVoisin.add(c);
     }
-    
+
     //function that will return the Distance beetween two Intersections
     public double getDistanceBetweenCarrefours(Carrefour c1){
 
