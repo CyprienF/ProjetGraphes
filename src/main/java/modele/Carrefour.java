@@ -133,11 +133,7 @@ public class Carrefour {
         return false;
     }
 
-<<<<<<< HEAD
     public boolean ajoutCarrefoursVoisins(List<Carrefour> mesCarrefours) {
-=======
-    public boolean ajoutCarrefoursVoisins (List<Carrefour> mesCarrefours) {
->>>>>>> 2e4de21a3fd39fb5f2550b169da3288c5771441c
         for (Carrefour carrefour : mesCarrefours) {
             if(carrefour.getId()!= this.id){
                 if(!this.carrefoursVoisins.contains(carrefour)){
