@@ -8,8 +8,8 @@ public class Carrefour {
     private double coordY;
 
     private List<Carrefour> plusCourtChemin = new LinkedList<Carrefour>();
-    private Integer distanceDeLaSource = Integer.MAX_VALUE;
-    private Map<Carrefour, Integer> carrefoursAdjacents = new HashMap<Carrefour, Integer>();
+    private Double distanceDeLaSource = Double.MAX_VALUE;
+    private Map<Carrefour, Double> carrefoursAdjacents = new HashMap<Carrefour, Double>();
 
     private String libelleCarrefour;
     private List<String> identifiantTroncon;
@@ -25,7 +25,7 @@ public class Carrefour {
         this.setIdentifiantTroncon(identifiantTroncon);
     }
 
-    public void ajouterCarrefourAdjacent(Carrefour voisin, int distance) {
+    public void ajouterCarrefourAdjacent(Carrefour voisin, double distance) {
         this.carrefoursAdjacents.put(voisin, distance);
     }
 
@@ -85,19 +85,19 @@ public class Carrefour {
         this.plusCourtChemin = plusCourtChemin;
     }
 
-    public Integer getDistanceDeLaSource() {
+    public Double getDistanceDeLaSource() {
         return distanceDeLaSource;
     }
 
-    public void setDistanceDeLaSource(Integer distanceDeLaSource) {
+    public void setDistanceDeLaSource(Double distanceDeLaSource) {
         this.distanceDeLaSource = distanceDeLaSource;
     }
 
-    public Map<Carrefour, Integer> getCarrefoursAdjacents() {
+    public Map<Carrefour, Double> getCarrefoursAdjacents() {
         return carrefoursAdjacents;
     }
 
-    public void setCarrefoursAdjacents(Map<Carrefour, Integer> carrefoursAdjacents) {
+    public void setCarrefoursAdjacents(Map<Carrefour, Double> carrefoursAdjacents) {
         this.carrefoursAdjacents = carrefoursAdjacents;
     }
 
