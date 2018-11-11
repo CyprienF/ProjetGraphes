@@ -58,8 +58,8 @@ public class ListeCarrefours {
      * @return
      */
     public boolean creationMatriceAdjacence() {
-        for (Carrefour c: mesCarrefours) {
-            c.ajoutCarefoursVoisin(mesCarrefours);
+        for (Carrefour carrefour : mesCarrefours) {
+            carrefour.ajoutCarrefoursVoisins(mesCarrefours);
         }
 
         return true;
