@@ -115,6 +115,13 @@ public class Carrefour {
         return 0.0;
     }
 
+    /**
+     *
+     * @param carrefour
+     * Si on trouve un des troncon recherché dans le trancon carrefour actuel on ajoute le carrefour passé en paramtre
+     * à l'objet actuel ensuite en retourne true
+     * @return
+     */
     public boolean findTroncon(Carrefour carrefour) {
 
         for (String troncon : carrefour.getIdentifiantTroncon()) {
@@ -126,7 +133,11 @@ public class Carrefour {
         return false;
     }
 
+<<<<<<< HEAD
     public boolean ajoutCarrefoursVoisins(List<Carrefour> mesCarrefours) {
+=======
+    public boolean ajoutCarrefoursVoisins (List<Carrefour> mesCarrefours) {
+>>>>>>> 2e4de21a3fd39fb5f2550b169da3288c5771441c
         for (Carrefour carrefour : mesCarrefours) {
             if(carrefour.getId()!= this.id){
                 if(!this.carrefoursVoisins.contains(carrefour)){
