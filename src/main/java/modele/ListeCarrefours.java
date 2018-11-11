@@ -49,8 +49,6 @@ public class ListeCarrefours {
             e.printStackTrace();
         }
 
-
-
         return true;
     }
 
@@ -63,6 +61,7 @@ public class ListeCarrefours {
         for (Carrefour c: mesCarrefours) {
             c.ajoutCarefoursVoisin(mesCarrefours);
         }
+
         return true;
     }
 

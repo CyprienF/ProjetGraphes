@@ -111,41 +111,42 @@ public class Carrefour {
      * @param carrefour
      * @return
      */
-    public double getDistanceBetweenCarrefours(Carrefour carrefour){
+    public double getDistanceBetweenCarrefours(Carrefour carrefour) {
         return 0.0;
     }
 
-    public boolean findTroncon(Carrefour c){
+    public boolean findTroncon(Carrefour carrefour) {
 
-        for (String troncon: c.getIdentifiantTroncon()) {
+        for (String troncon : carrefour.getIdentifiantTroncon()) {
             if(this.identifiantTroncon.contains(troncon)){
-                this.addCarrefourVoisin(c);
+                this.addCarrefourVoisin(carrefour);
                 return true;
             }
         }
         return false;
     }
 
-    public boolean ajoutCarefoursVoisin (List<Carrefour> mesCarrefours){
-        for (Carrefour c: mesCarrefours) {
-            if(c.getId()!=this.id ){
-                if(!this.carrefoursVoisins.contains(c)){
-                    if(c.findTroncon(this)){
-                        this.carrefoursVoisins.add(c);
+    private boolean ajoutCarrefoursVoisins (List<Carrefour> mesCarrefours) {
+        for (Carrefour carrefour : mesCarrefours) {
+            if(carrefour.getId()!= this.id){
+                if(!this.carrefoursVoisins.contains(carrefour)){
+                    if(carrefour.findTroncon(this)){
+                        this.carrefoursVoisins.add(carrefour);
                     }
                 }
 
             }
         }
+
         return true;
-    };
+    }
+
     @Override
     public boolean equals(Object other){
         if (other == null) return false;
         if (other == this) return true;
-        if (!(other instanceof Carrefour))return false;
-        Carrefour c1 = (Carrefour)other;
-        return c1.getId()== this.id;
-    };
+        if (!(other instanceof Carrefour)) return false;
+        Carrefour carrefour = (Carrefour) other;
+        return carrefour.getId()== this.id;
+    }
 }
-

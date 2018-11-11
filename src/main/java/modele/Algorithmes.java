@@ -80,7 +80,7 @@ public class Algorithmes {
             if (algorithmeMethode.equals("Dijkstra")) {
                 carrefourEvalue.setDistanceDeLaSource(distanceCarrefourCourant + distance);
             } else {
-                Double distancePrediteCarrefourFin = getHeuristique(carrefourCourant, carrefourFin);
+                double distancePrediteCarrefourFin = getHeuristique(carrefourCourant, carrefourFin);
                 carrefourEvalue.setDistanceDeLaSource(distanceCarrefourCourant + distance + distancePrediteCarrefourFin);
             }
 
@@ -90,7 +90,7 @@ public class Algorithmes {
         }
     }
 
-    public double getHeuristique(Carrefour voisin, Carrefour fin) {
+    private double getHeuristique(Carrefour voisin, Carrefour fin) {
         return abs(fin.getCoordX() - voisin.getCoordX()) + abs(fin.getCoordY() - voisin.getCoordY());
     }
 }
