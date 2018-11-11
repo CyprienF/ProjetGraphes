@@ -77,6 +77,10 @@ public class Carrefour {
         this.carrefoursVoisins.add(carrefour);
     }
 
+    public List<Carrefour> getCarrefoursVoisins() {
+        return carrefoursVoisins;
+    }
+
     public List<Carrefour> getPlusCourtChemin() {
         return plusCourtChemin;
     }
@@ -110,4 +114,38 @@ public class Carrefour {
     public double getDistanceBetweenCarrefours(Carrefour carrefour){
         return 0.0;
     }
+
+    public boolean findTroncon(Carrefour c){
+
+        for (String troncon: c.getIdentifiantTroncon()) {
+            if(this.identifiantTroncon.contains(troncon)){
+                this.addCarrefourVoisin(c);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean ajoutCarefoursVoisin (List<Carrefour> mesCarrefours){
+        for (Carrefour c: mesCarrefours) {
+            if(c.getId()!=this.id ){
+                if(!this.carrefoursVoisins.contains(c)){
+                    if(c.findTroncon(this)){
+                        this.carrefoursVoisins.add(c);
+                    }
+                }
+
+            }
+        }
+        return true;
+    };
+    @Override
+    public boolean equals(Object other){
+        if (other == null) return false;
+        if (other == this) return true;
+        if (!(other instanceof Carrefour))return false;
+        Carrefour c1 = (Carrefour)other;
+        return c1.getId()== this.id;
+    };
 }
+
