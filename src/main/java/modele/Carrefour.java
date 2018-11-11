@@ -50,7 +50,7 @@ public class Carrefour {
     }
 
     public void setIdentifiantTroncon(String identifiantTroncon) {
-        String[] labels = libelleCarrefour.split("|");
+        String[] labels = identifiantTroncon.split("\\|");
 
         for (String label : labels) {
             this.identifiantTroncon.add(label);
