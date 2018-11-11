@@ -115,6 +115,13 @@ public class Carrefour {
         return 0.0;
     }
 
+    /**
+     *
+     * @param carrefour
+     * Si on trouve un des troncon recherché dans le trancon carrefour actuel on ajoute le carrefour passé en paramtre
+     * à l'objet actuel ensuite en retourne true
+     * @return
+     */
     public boolean findTroncon(Carrefour carrefour) {
 
         for (String troncon : carrefour.getIdentifiantTroncon()) {
