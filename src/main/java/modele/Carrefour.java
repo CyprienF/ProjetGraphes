@@ -9,11 +9,10 @@ public class Carrefour {
 
     private List<Carrefour> plusCourtChemin = new LinkedList<Carrefour>();
     private Double distanceDeLaSource = Double.MAX_VALUE;
-    private Map<Carrefour, Double> carrefoursAdjacents = new HashMap<Carrefour, Double>();
+    private Map<Carrefour, Double> carrefoursAdjacents;
 
     private String libelleCarrefour;
     private List<String> identifiantTroncon;
-    private List<Carrefour> carrefoursVoisins;
 
     public Carrefour(int id, double coordX, double coordY, String libelleCarrefour, String identifiantTroncon) {
         this.id = id;
@@ -21,12 +20,12 @@ public class Carrefour {
         this.coordY = coordY;
         this.libelleCarrefour = libelleCarrefour;
         this.identifiantTroncon = new ArrayList<String>();
-        this.carrefoursVoisins = new ArrayList<Carrefour>();
+        this.carrefoursAdjacents = new HashMap<Carrefour,Double>();
         this.setIdentifiantTroncon(identifiantTroncon);
     }
 
-    public void ajouterCarrefourAdjacent(Carrefour voisin, double distance) {
-        this.carrefoursAdjacents.put(voisin, distance);
+    public void ajouterCarrefourAdjacent(Carrefour voisin) {
+        this.carrefoursAdjacents.put(voisin, this.getDistanceBetweenCarrefours(voisin));
     }
 
     public int getId() {
@@ -73,14 +72,6 @@ public class Carrefour {
         this.coordY = coordY;
     }
 
-    public void addCarrefourVoisin(Carrefour carrefour){
-        this.carrefoursVoisins.add(carrefour);
-    }
-
-    public List<Carrefour> getCarrefoursVoisins() {
-        return carrefoursVoisins;
-    }
-
     public List<Carrefour> getPlusCourtChemin() {
         return plusCourtChemin;
     }
@@ -101,9 +92,6 @@ public class Carrefour {
         return carrefoursAdjacents;
     }
 
-    public void setCarrefoursAdjacents(Map<Carrefour, Double> carrefoursAdjacents) {
-        this.carrefoursAdjacents = carrefoursAdjacents;
-    }
 
     /**
      * Return the distance beetween two intersections
@@ -126,7 +114,7 @@ public class Carrefour {
 
         for (String troncon : carrefour.getIdentifiantTroncon()) {
             if(this.identifiantTroncon.contains(troncon)){
-                this.addCarrefourVoisin(carrefour);
+                this.ajouterCarrefourAdjacent(carrefour);
                 return true;
             }
         }
@@ -136,12 +124,11 @@ public class Carrefour {
     public boolean ajoutCarrefoursVoisins (List<Carrefour> mesCarrefours) {
         for (Carrefour carrefour : mesCarrefours) {
             if(carrefour.getId()!= this.id){
-                if(!this.carrefoursVoisins.contains(carrefour)){
+                if(!this.carrefoursAdjacents.containsKey(carrefour)){
                     if(carrefour.findTroncon(this)){
-                        this.carrefoursVoisins.add(carrefour);
+                        this.ajouterCarrefourAdjacent(carrefour);
                     }
                 }
-
             }
         }
 

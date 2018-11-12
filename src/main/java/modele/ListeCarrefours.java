@@ -65,4 +65,7 @@ public class ListeCarrefours {
         return true;
     }
 
+    public List<Carrefour> getMesCarrefours() {
+        return mesCarrefours;
+    }
 }
