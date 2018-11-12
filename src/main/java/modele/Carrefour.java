@@ -121,7 +121,7 @@ public class Carrefour {
         return false;
     }
 
-    public boolean ajoutCarrefoursVoisins (List<Carrefour> mesCarrefours) {
+    public boolean ajoutCarrefoursVoisins(List<Carrefour> mesCarrefours) {
         for (Carrefour carrefour : mesCarrefours) {
             if(carrefour.getId()!= this.id){
                 if(!this.carrefoursAdjacents.containsKey(carrefour)){
