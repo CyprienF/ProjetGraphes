@@ -90,7 +90,13 @@ public class Algorithmes {
         }
     }
 
+    /**
+     *
+     * @param voisin
+     * @param fin
+     * @return retourne la distance en mettre en le carrefours voisin et le carrefours fin
+     */
     private double getHeuristique(Carrefour voisin, Carrefour fin) {
-        return abs(fin.getCoordX() - voisin.getCoordX()) + abs(fin.getCoordY() - voisin.getCoordY());
+        return voisin.getDistanceBetweenCarrefours(fin);
     }
 }
