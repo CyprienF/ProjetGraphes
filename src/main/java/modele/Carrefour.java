@@ -100,7 +100,16 @@ public class Carrefour {
      * @return
      */
     public double getDistanceBetweenCarrefours(Carrefour carrefour) {
-        return 0.0;
+        final int R = 6371; // Radius of the earth
+
+        double latDistance = Math.toRadians(this.coordY - carrefour.getCoordY());
+        double lonDistance = Math.toRadians(this.coordX - carrefour.getCoordX());
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(this.coordY)) * Math.cos(Math.toRadians(carrefour.getCoordY()))
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double distance = R * c * 1000; // convert to meters
+        return distance;
     }
 
     /**
