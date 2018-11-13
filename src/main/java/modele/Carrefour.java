@@ -24,6 +24,20 @@ public class Carrefour {
         this.setIdentifiantTroncon(identifiantTroncon);
     }
 
+    public Carrefour(Carrefour c){
+        this.id = c.getId();
+        this.coordX = c.getCoordX();
+        this.coordY = c.getCoordY();
+        this.libelleCarrefour = c.getLibellecarrefour();
+        this.identifiantTroncon = new ArrayList<String>();
+        this.carrefoursAdjacents = new HashMap<Carrefour,Double>();
+
+        for(String troncon: c.getIdentifiantTroncon()){
+            this.identifiantTroncon.add(troncon);
+        }
+
+    }
+
     public void ajouterCarrefourAdjacent(Carrefour voisin) {
         this.carrefoursAdjacents.put(voisin, this.getDistanceBetweenCarrefours(voisin));
     }
@@ -139,8 +153,10 @@ public class Carrefour {
                     }
                 }
             }
+            if(this.getIdentifiantTroncon().size() == this.getCarrefoursAdjacents().size()){
+                return true;
+            }
         }
-
         return true;
     }
 

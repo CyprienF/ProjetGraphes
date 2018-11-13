@@ -3,6 +3,7 @@ package modele;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.json.simple.JSONArray;
@@ -15,6 +16,14 @@ public class ListeCarrefours {
 
     public ListeCarrefours() {
         this.mesCarrefours = new ArrayList<Carrefour>();
+    }
+
+    public ListeCarrefours (ListeCarrefours listeCarrefours){
+        this.mesCarrefours = new ArrayList<Carrefour>();
+        for (Carrefour carrefour : listeCarrefours.getMesCarrefours()) {
+            this.mesCarrefours.add(new Carrefour(carrefour));
+        }
+        this.creationMatriceAdjacence();
     }
 
     /**
@@ -38,7 +47,6 @@ public class ListeCarrefours {
                 properties = (JSONObject) carrefour.get("properties");
                 geometry = (JSONObject) carrefour.get("geometry");
                 coordinates = (JSONArray) geometry.get("coordinates");
-                System.out.println(carrefour);
                 c= new Carrefour(i, (Double) coordinates.get(0), (Double) coordinates.get(1),(String) properties.get("libellecarrefour"), (String) properties.get("identtroncon"));
                 mesCarrefours.add(c);
             }
@@ -68,4 +76,11 @@ public class ListeCarrefours {
     public List<Carrefour> getMesCarrefours() {
         return mesCarrefours;
     }
+
+    public boolean clearCarrefourList(){
+        this.mesCarrefours.clear();
+        return true;
+    }
+
+
 }
