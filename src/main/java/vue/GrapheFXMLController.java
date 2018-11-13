@@ -6,6 +6,7 @@ import com.lynden.gmapsfx.javascript.event.UIEventType;
 import com.lynden.gmapsfx.javascript.object.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import modele.Algorithmes;
 import modele.Carrefour;
 import modele.ListeCarrefours;
 import netscape.javascript.JSObject;
@@ -18,6 +19,8 @@ public class GrapheFXMLController implements Initializable, MapComponentInitiali
     @FXML
     protected GoogleMapView mapView;
 
+    private GoogleMap map;
+
     private ListeCarrefours listeCarrefours;
 
     private Carrefour selectedCarrefour1;
@@ -25,6 +28,14 @@ public class GrapheFXMLController implements Initializable, MapComponentInitiali
     private Carrefour selectedCarrefour2;
 
     private int numberOfSelectedCarrefours;
+
+    private LatLong carrefourLocation;
+
+    private Marker markerCarrefour;
+
+    private MarkerOptions markerOptionsCarrefour;
+
+    private Algorithmes algorithmes = new Algorithmes();
 
     public void initialize(URL url, ResourceBundle rb) {
         mapView.addMapInializedListener(this);
@@ -37,12 +48,6 @@ public class GrapheFXMLController implements Initializable, MapComponentInitiali
 
     public void mapInitialized() {
         this.initializeAllCarrefours();
-
-        LatLong carrefourLocation;
-
-        Marker markerCarrefour;
-
-        MarkerOptions markerOptionsCarrefour;
 
         LatLong lyonLocation = new LatLong(45.764043, 4.835658999999964);
 
@@ -59,29 +64,44 @@ public class GrapheFXMLController implements Initializable, MapComponentInitiali
                 .zoomControl(true)
                 .zoom(16);
 
-        GoogleMap map = mapView.createMap(mapOptions);
+        map = mapView.createMap(mapOptions);
 
-        for(Carrefour carrefour : this.listeCarrefours.getMesCarrefours()) {
+        this.initializeAllMarkers(this.listeCarrefours);
+    }
+
+    private void launchAlgorithme(String methode) {
+        this.deleteAllMarkers();
+
+        ListeCarrefours listeCarrefoursAlgorithme = algorithmes.cheminLePlusCourt(this.listeCarrefours, selectedCarrefour1, selectedCarrefour2, methode);
+        this.initializeAlgorithmeMarkers(listeCarrefoursAlgorithme);
+    }
+
+    private void deleteAllMarkers() {
+        this.map.clearMarkers();
+    }
+
+    private void initializeAllMarkers(ListeCarrefours carrefours) {
+        for(Carrefour carrefour : carrefours.getMesCarrefours()) {
 
             // Position du carrefour
-            carrefourLocation = new LatLong(carrefour.getCoordY(), carrefour.getCoordX());
+            this.carrefourLocation = new LatLong(carrefour.getCoordY(), carrefour.getCoordX());
 
             // Ajout du marker sur la carte
-            markerOptionsCarrefour = new MarkerOptions();
-            markerOptionsCarrefour.position(carrefourLocation);
+            this.markerOptionsCarrefour = new MarkerOptions();
+            this.markerOptionsCarrefour.position(this.carrefourLocation);
 
-            markerCarrefour = new Marker(markerOptionsCarrefour);
+            this.markerCarrefour = new Marker(this.markerOptionsCarrefour);
 
-            map.addMarker(markerCarrefour);
+            this.map.addMarker(this.markerCarrefour);
 
-            map.addUIEventHandler(markerCarrefour, UIEventType.click, (JSObject obj) -> {
+            this.map.addUIEventHandler(this.markerCarrefour, UIEventType.click, (JSObject obj) -> {
 
-                if(numberOfSelectedCarrefours == 0) {
-                    selectedCarrefour1 = carrefour;
+                if(this.numberOfSelectedCarrefours == 0) {
+                    this.selectedCarrefour1 = carrefour;
                 }
 
-                if(numberOfSelectedCarrefours == 1) {
-                    selectedCarrefour2 = carrefour;
+                if(this.numberOfSelectedCarrefours == 1) {
+                    this.selectedCarrefour2 = carrefour;
                 }
 
                 numberOfSelectedCarrefours++;
@@ -92,4 +112,19 @@ public class GrapheFXMLController implements Initializable, MapComponentInitiali
         }
     }
 
+    private void initializeAlgorithmeMarkers(ListeCarrefours carrefours) {
+        for(Carrefour carrefour : carrefours.getMesCarrefours()) {
+
+            // Position du carrefour
+            this.carrefourLocation = new LatLong(carrefour.getCoordY(), carrefour.getCoordX());
+
+            // Ajout du marker sur la carte
+            this.markerOptionsCarrefour = new MarkerOptions();
+            this.markerOptionsCarrefour.position(this.carrefourLocation);
+
+            this.markerCarrefour = new Marker(this.markerOptionsCarrefour);
+
+            this.map.addMarker(this.markerCarrefour);
+        }
+    }
 }
