@@ -5,8 +5,10 @@ import com.lynden.gmapsfx.MapComponentInitializedListener;
 import com.lynden.gmapsfx.javascript.event.UIEventType;
 import com.lynden.gmapsfx.javascript.object.*;
 import com.lynden.gmapsfx.service.directions.*;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import modele.Algorithmes;
 import modele.Carrefour;
 import modele.ListeCarrefours;
@@ -24,6 +26,9 @@ public class GrapheFXMLController implements Initializable, MapComponentInitiali
 
     @FXML
     protected GoogleMapView mapView;
+
+    @FXML
+    protected Button clearButton;
 
     private GoogleMap map;
 
@@ -46,6 +51,20 @@ public class GrapheFXMLController implements Initializable, MapComponentInitiali
     private MarkerOptions markerOptionsCarrefour;
 
     private Algorithmes algorithmes = new Algorithmes();
+
+    @FXML
+    private void clearSelectedCarrefours(ActionEvent event) {
+        this.clearButton.setDisable(true);
+        this.numberOfSelectedCarrefours = 0;
+
+        if(selectedCarrefour1 != null) {
+            selectedCarrefour1 = null;
+        }
+
+        if(selectedCarrefour2 != null) {
+            selectedCarrefour2 = null;
+        }
+    }
 
     public void initialize(URL url, ResourceBundle rb) {
         mapView.addMapInializedListener(this);
@@ -133,7 +152,14 @@ public class GrapheFXMLController implements Initializable, MapComponentInitiali
                 if(this.numberOfSelectedCarrefours == 1) {
                     this.selectedCarrefour2 = carrefour;
 
-                    this.createRoute();
+                    this.clearButton.setDisable(false);
+
+                    //this.createRoute();
+                    algorithmes.cheminLePlusCourt(listeCarrefours,this.selectedCarrefour1,this.selectedCarrefour2,"Dijkstra");
+                    this.deleteAllMarkers();
+                    this.selectedCarrefour2.addCarrefourPluscourtCHhemin(selectedCarrefour2);
+                    this.initializeAlgorithmeMarkers(this.selectedCarrefour2.getPlusCourtChemin());
+
                 }
 
                 numberOfSelectedCarrefours++;
@@ -141,6 +167,19 @@ public class GrapheFXMLController implements Initializable, MapComponentInitiali
                 System.out.println(selectedCarrefour1);
                 System.out.println(selectedCarrefour2);
             });
+        }
+    }
+
+    private void initializeAlgorithmeMarkers(List <Carrefour> carrefours) {
+        this.deleteAllMarkers();
+        for(Carrefour carrefour : carrefours) {
+            // Position du carrefour
+            this.carrefourLocation = new LatLong(carrefour.getCoordY(), carrefour.getCoordX());
+            // Ajout du marker sur la carte
+            this.markerOptionsCarrefour = new MarkerOptions();
+            this.markerOptionsCarrefour.position(this.carrefourLocation);
+            this.markerCarrefour = new Marker(this.markerOptionsCarrefour);
+            this.map.addMarker(this.markerCarrefour);
         }
     }
 }

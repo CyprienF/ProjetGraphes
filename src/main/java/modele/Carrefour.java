@@ -94,6 +94,10 @@ public class Carrefour {
         this.plusCourtChemin = plusCourtChemin;
     }
 
+    public void addCarrefourPluscourtCHhemin(Carrefour c1) {
+        this.plusCourtChemin.add(c1);
+    }
+
     public Double getDistanceDeLaSource() {
         return distanceDeLaSource;
     }
