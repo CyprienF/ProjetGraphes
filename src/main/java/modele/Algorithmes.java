@@ -38,6 +38,7 @@ public class Algorithmes {
                     carrefoursNonParcourus.add(carrefourAdjacent);
                 }
             }
+            carrefoursParcourus.add(carrefourCourant);
         }
 
         return graphe;
