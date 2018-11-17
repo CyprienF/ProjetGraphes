@@ -16,7 +16,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class GrapheFXMLController implements Initializable, MapComponentInitializedListener, DirectionsServiceCallback {
+public class
+GrapheFXMLController implements Initializable, MapComponentInitializedListener, DirectionsServiceCallback {
 
     @FXML
     protected GoogleMapView mapView;
@@ -49,7 +50,14 @@ public class GrapheFXMLController implements Initializable, MapComponentInitiali
 
     private void initializeAllCarrefours() {
         this.listeCarrefours = new ListeCarrefours();
+        long start = System.currentTimeMillis();
         this.listeCarrefours.initialisationListeCarrefours();
+        long elapsedTimeMillis = System.currentTimeMillis()-start;
+        System.out.println("Lecture Fichier: "+elapsedTimeMillis/1000F);
+        start = System.currentTimeMillis();
+        this.listeCarrefours.creationMatriceAdjacence();
+        elapsedTimeMillis = System.currentTimeMillis()-start;
+        System.out.println("Matrice: "+elapsedTimeMillis/1000F);
     }
 
     @Override
