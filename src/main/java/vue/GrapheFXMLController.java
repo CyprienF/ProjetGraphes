@@ -5,10 +5,14 @@ import com.lynden.gmapsfx.MapComponentInitializedListener;
 import com.lynden.gmapsfx.javascript.event.UIEventType;
 import com.lynden.gmapsfx.javascript.object.*;
 import com.lynden.gmapsfx.service.directions.*;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.shape.Rectangle;
 import modele.Algorithmes;
 import modele.Carrefour;
 import modele.ListeCarrefours;
@@ -28,13 +32,24 @@ public class GrapheFXMLController implements Initializable, MapComponentInitiali
     protected GoogleMapView mapView;
 
     @FXML
-    protected Button clearButton;
+    protected Button resetButton;
+
+    @FXML
+    protected Label selectedCarrefour1Label;
+
+    @FXML
+    protected Label selectedCarrefour2Label;
+
+    @FXML
+    protected Rectangle rectangle;
+
+    @FXML
+    protected Button launchAlgorithme;
+
+    @FXML
+    protected ChoiceBox choiceAlgorithmes;
 
     private GoogleMap map;
-
-    protected DirectionsService directionsService;
-    protected DirectionsPane directionsPane;
-    protected DirectionsRenderer directionsRenderer = null;
 
     private ListeCarrefours listeCarrefours;
 
@@ -54,20 +69,53 @@ public class GrapheFXMLController implements Initializable, MapComponentInitiali
 
     @FXML
     private void clearSelectedCarrefours(ActionEvent event) {
-        this.clearButton.setDisable(true);
+        this.resetButton.setVisible(false);
+        this.launchAlgorithme.setVisible(false);
+        this.rectangle.setVisible(false);
         this.numberOfSelectedCarrefours = 0;
+        this.choiceAlgorithmes.setVisible(false);
 
-        if(selectedCarrefour1 != null) {
-            selectedCarrefour1 = null;
+        if(this.selectedCarrefour1 != null) {
+            this.selectedCarrefour1 = null;
+            this.selectedCarrefour1Label.setText("");
         }
 
-        if(selectedCarrefour2 != null) {
-            selectedCarrefour2 = null;
+        if(this.selectedCarrefour2 != null) {
+            this.selectedCarrefour2 = null;
+            this.selectedCarrefour2Label.setText("");
+        }
+
+        this.deleteAllMarkers();
+        this.initializeAllMarkers(this.listeCarrefours);
+    }
+
+    @FXML
+    private void launchAlgorithme(ActionEvent event) {
+        if(this.selectedCarrefour1 != null && this.selectedCarrefour2 != null) {
+            algorithmes.cheminLePlusCourt(listeCarrefours, this.selectedCarrefour1, this.selectedCarrefour2, this.choiceAlgorithmes.getValue().toString());
+            this.deleteAllMarkers();
+            this.selectedCarrefour2.addCarrefourPluscourtCHhemin(selectedCarrefour2);
+            this.initializeAlgorithmeMarkers(this.selectedCarrefour2.getPlusCourtChemin());
         }
     }
 
     public void initialize(URL url, ResourceBundle rb) {
         mapView.addMapInializedListener(this);
+        this.initializeComponents();
+    }
+
+    private void initializeComponents() {
+        this.selectedCarrefour1Label.setText("");
+        this.selectedCarrefour2Label.setText("");
+        this.resetButton.setText("Reset");
+        this.launchAlgorithme.setText("Lancer l'algorithme");
+        this.resetButton.setVisible(false);
+        this.rectangle.setVisible(false);
+        this.launchAlgorithme.setVisible(false);
+
+        this.choiceAlgorithmes.getItems().addAll(FXCollections.observableArrayList("Dijkstra", "A*"));
+        this.choiceAlgorithmes.getSelectionModel().selectFirst();
+        this.choiceAlgorithmes.setVisible(false);
     }
 
     private void initializeAllCarrefours() {
@@ -106,23 +154,6 @@ public class GrapheFXMLController implements Initializable, MapComponentInitiali
         map = mapView.createMap(mapOptions);
 
         this.initializeAllMarkers(this.listeCarrefours);
-
-        directionsService = new DirectionsService();
-        directionsPane = mapView.getDirec();
-    }
-
-    private void createRoute() {
-
-        //List<Carrefour> mesCarrefours = listeCarrefours.getMesCarrefours();
-
-        //Carrefour origin = mesCarrefours.get(0);
-        //Carrefour fin = mesCarrefours.get(mesCarrefours.size() - 1);
-
-        LatLong originLatLong = new LatLong(selectedCarrefour1.getCoordX(), selectedCarrefour1.getCoordY());
-        LatLong finLatLong = new LatLong(selectedCarrefour2.getCoordX(), selectedCarrefour2.getCoordY());
-
-        DirectionsRequest request = new DirectionsRequest("Lyon", "Paris", TravelModes.WALKING);
-        directionsService.getRoute(request, this, new DirectionsRenderer(false, mapView.getMap(), directionsPane));
     }
 
     private void deleteAllMarkers() {
@@ -146,26 +177,20 @@ public class GrapheFXMLController implements Initializable, MapComponentInitiali
             this.map.addUIEventHandler(this.markerCarrefour, UIEventType.click, (JSObject obj) -> {
 
                 if(this.numberOfSelectedCarrefours == 0) {
+                    this.rectangle.setVisible(true);
                     this.selectedCarrefour1 = carrefour;
-                }
+                    this.selectedCarrefour1Label.setText("Carrefour 1 : " + carrefour.getLibellecarrefour());
 
-                if(this.numberOfSelectedCarrefours == 1) {
+                } else if(this.numberOfSelectedCarrefours == 1) {
                     this.selectedCarrefour2 = carrefour;
+                    this.selectedCarrefour2Label.setText("Carrefour 2 : " + carrefour.getLibellecarrefour());
 
-                    this.clearButton.setDisable(false);
-
-                    //this.createRoute();
-                    algorithmes.cheminLePlusCourt(listeCarrefours,this.selectedCarrefour1,this.selectedCarrefour2,"Dijkstra");
-                    this.deleteAllMarkers();
-                    this.selectedCarrefour2.addCarrefourPluscourtCHhemin(selectedCarrefour2);
-                    this.initializeAlgorithmeMarkers(this.selectedCarrefour2.getPlusCourtChemin());
-
+                    this.resetButton.setVisible(true);
+                    this.launchAlgorithme.setVisible(true);
+                    this.choiceAlgorithmes.setVisible(true);
                 }
 
                 numberOfSelectedCarrefours++;
-
-                System.out.println(selectedCarrefour1);
-                System.out.println(selectedCarrefour2);
             });
         }
     }
