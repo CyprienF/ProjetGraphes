@@ -16,8 +16,11 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class
-GrapheFXMLController implements Initializable, MapComponentInitializedListener, DirectionsServiceCallback {
+public class GrapheFXMLController implements Initializable, MapComponentInitializedListener, DirectionsServiceCallback {
+
+    public GrapheFXMLController() {
+        this.initializeAllCarrefours();
+    }
 
     @FXML
     protected GoogleMapView mapView;
@@ -65,7 +68,6 @@ GrapheFXMLController implements Initializable, MapComponentInitializedListener, 
     }
 
     public void mapInitialized() {
-        this.initializeAllCarrefours();
 
         LatLong lyonLocation = new LatLong(45.764043, 4.835658999999964);
 
