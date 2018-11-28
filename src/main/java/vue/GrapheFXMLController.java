@@ -67,6 +67,8 @@ public class GrapheFXMLController implements Initializable, MapComponentInitiali
 
     private Algorithmes algorithmes = new Algorithmes();
 
+    private boolean launched = false;
+
     @FXML
     private void clearSelectedCarrefours(ActionEvent event) {
         this.resetButton.setVisible(false);
@@ -85,8 +87,12 @@ public class GrapheFXMLController implements Initializable, MapComponentInitiali
             this.selectedCarrefour2Label.setText("");
         }
 
-        this.deleteAllMarkers();
-        this.initializeAllMarkers(this.listeCarrefours);
+        if(this.launched) {
+            this.deleteAllMarkers();
+            this.initializeAllCarrefours();
+            this.initializeAllMarkers(this.listeCarrefours);
+            this.launched = false;
+        }
     }
 
     @FXML
@@ -96,6 +102,7 @@ public class GrapheFXMLController implements Initializable, MapComponentInitiali
             this.deleteAllMarkers();
             this.selectedCarrefour2.addCarrefourPluscourtCHhemin(selectedCarrefour2);
             this.initializeAlgorithmeMarkers(this.selectedCarrefour2.getPlusCourtChemin());
+            this.launched = true;
         }
     }
 
