@@ -76,19 +76,23 @@ public class Algorithmes {
     private void calculerDistanceMinimum(Carrefour carrefourEvalue, Carrefour carrefourCourant, Carrefour carrefourFin, Double distance, String algorithmeMethode) {
         Double distanceCarrefourCourant = carrefourCourant.getDistanceDeLaSource();
 
-        if (distanceCarrefourCourant + distance < carrefourEvalue.getDistanceDeLaSource()) {
+        if(algorithmeMethode.equals("Dijkstra")) {
 
-            if (algorithmeMethode.equals("Dijkstra")) {
+            if (distanceCarrefourCourant + distance < carrefourEvalue.getDistanceDeLaSource()) {
                 carrefourEvalue.setDistanceDeLaSource(distanceCarrefourCourant + distance);
-            } else {
-                double distancePrediteCarrefourFin = getHeuristique(carrefourCourant, carrefourFin);
-                carrefourEvalue.setDistanceDeLaSource(distanceCarrefourCourant + distance + distancePrediteCarrefourFin);
             }
 
-            LinkedList<Carrefour> plusCoursChemin = new LinkedList<Carrefour>(carrefourCourant.getPlusCourtChemin());
-            plusCoursChemin.add(carrefourCourant);
-            carrefourEvalue.setPlusCourtChemin(plusCoursChemin);
+        } else {
+            double distancePrediteCarrefourFin = getHeuristique(carrefourCourant, carrefourFin);
+
+            if (distanceCarrefourCourant + distance + distancePrediteCarrefourFin < carrefourEvalue.getDistanceDeLaSource()) {
+                carrefourEvalue.setDistanceDeLaSource(distanceCarrefourCourant + distance + distancePrediteCarrefourFin);
+            }
         }
+
+        LinkedList<Carrefour> plusCoursChemin = new LinkedList<Carrefour>(carrefourCourant.getPlusCourtChemin());
+        plusCoursChemin.add(carrefourCourant);
+        carrefourEvalue.setPlusCourtChemin(plusCoursChemin);
     }
 
     /**
