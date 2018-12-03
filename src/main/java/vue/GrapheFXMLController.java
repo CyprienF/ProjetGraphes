@@ -82,17 +82,17 @@ public class GrapheFXMLController implements Initializable, MapComponentInitiali
         this.choiceAlgorithmes.setVisible(false);
         this.timeAlgos.setText("");
 
-        if(this.selectedCarrefour1 != null) {
+        if (this.selectedCarrefour1 != null) {
             this.selectedCarrefour1 = null;
             this.selectedCarrefour1Label.setText("");
         }
 
-        if(this.selectedCarrefour2 != null) {
+        if (this.selectedCarrefour2 != null) {
             this.selectedCarrefour2 = null;
             this.selectedCarrefour2Label.setText("");
         }
 
-        if(this.launched) {
+        if (this.launched) {
             this.deleteAllMarkers();
             this.initializeAllCarrefours();
             this.initializeAllMarkers(this.listeCarrefours);
@@ -102,20 +102,20 @@ public class GrapheFXMLController implements Initializable, MapComponentInitiali
 
     @FXML
     private void launchAlgorithme(ActionEvent event) {
-        if(this.selectedCarrefour1 != null && this.selectedCarrefour2 != null) {
+        if (this.selectedCarrefour1 != null && this.selectedCarrefour2 != null) {
             long start = System.currentTimeMillis();
 
-            if(this.choiceAlgorithmes.getValue().toString().equals("Dijkstra")){
+            if (this.choiceAlgorithmes.getValue().toString().equals("Dijkstra")) {
                 algorithmes.cheminLePlusCourt(listeCarrefours, this.selectedCarrefour1, this.selectedCarrefour2, this.choiceAlgorithmes.getValue().toString());
-            }else if(this.choiceAlgorithmes.getValue().toString().equals("Dijkstra Fibonacci")){
+            } else if (this.choiceAlgorithmes.getValue().toString().equals("Dijkstra Fibonacci")) {
                 algorithmes.cheminLePlusCourtFibonacci(listeCarrefours, this.selectedCarrefour1, this.selectedCarrefour2, "Dijkstra");
-            }else{
+            } else {
                 algorithmes.cheminLePlusCourtAStar(listeCarrefours, this.selectedCarrefour1, this.selectedCarrefour2, this.choiceAlgorithmes.getValue().toString());
             }
 
-            long elapsedTimeMillis = System.currentTimeMillis()-start;
-            BigDecimal timeSpent= (new BigDecimal(elapsedTimeMillis)).divide(new BigDecimal(1000));
-            this.timeAlgos.setText(this.choiceAlgorithmes.getValue().toString()+ " a tourné pendant: "+timeSpent+" seconde");
+            long elapsedTimeMillis = System.currentTimeMillis() - start;
+            BigDecimal timeSpent = (new BigDecimal(elapsedTimeMillis)).divide(new BigDecimal(1000));
+            this.timeAlgos.setText(this.choiceAlgorithmes.getValue().toString() + " a tourné pendant: " + timeSpent + " seconde");
             this.deleteAllMarkers();
             this.selectedCarrefour2.addCarrefourPluscourtCHhemin(selectedCarrefour2);
             this.initializeAlgorithmeMarkers(this.selectedCarrefour2.getPlusCourtChemin());
@@ -138,7 +138,7 @@ public class GrapheFXMLController implements Initializable, MapComponentInitiali
         this.rectangle.setVisible(false);
         this.launchAlgorithme.setVisible(false);
 
-        this.choiceAlgorithmes.getItems().addAll(FXCollections.observableArrayList("Dijkstra","Dijkstra Fibonacci", "A*"));
+        this.choiceAlgorithmes.getItems().addAll(FXCollections.observableArrayList("Dijkstra", "Dijkstra Fibonacci", "A*"));
         this.choiceAlgorithmes.getSelectionModel().selectFirst();
         this.choiceAlgorithmes.setVisible(false);
     }
@@ -147,12 +147,12 @@ public class GrapheFXMLController implements Initializable, MapComponentInitiali
         this.listeCarrefours = new ListeCarrefours();
         long start = System.currentTimeMillis();
         this.listeCarrefours.initialisationListeCarrefours();
-        long elapsedTimeMillis = System.currentTimeMillis()-start;
-        System.out.println("Lecture Fichier: "+elapsedTimeMillis/1000F);
+        long elapsedTimeMillis = System.currentTimeMillis() - start;
+        System.out.println("Lecture Fichier: " + elapsedTimeMillis / 1000F);
         start = System.currentTimeMillis();
         this.listeCarrefours.creationMatriceAdjacence();
-        elapsedTimeMillis = System.currentTimeMillis()-start;
-        System.out.println("Matrice: "+elapsedTimeMillis/1000F);
+        elapsedTimeMillis = System.currentTimeMillis() - start;
+        System.out.println("Matrice: " + elapsedTimeMillis / 1000F);
     }
 
     @Override
@@ -186,7 +186,7 @@ public class GrapheFXMLController implements Initializable, MapComponentInitiali
     }
 
     private void initializeAllMarkers(ListeCarrefours carrefours) {
-        for(Carrefour carrefour : carrefours.getMesCarrefours()) {
+        for (Carrefour carrefour : carrefours.getMesCarrefours()) {
 
             // Position du carrefour
             this.carrefourLocation = new LatLong(carrefour.getCoordY(), carrefour.getCoordX());
@@ -201,12 +201,12 @@ public class GrapheFXMLController implements Initializable, MapComponentInitiali
 
             this.map.addUIEventHandler(this.markerCarrefour, UIEventType.click, (JSObject obj) -> {
 
-                if(this.numberOfSelectedCarrefours == 0) {
+                if (this.numberOfSelectedCarrefours == 0) {
                     this.rectangle.setVisible(true);
                     this.selectedCarrefour1 = carrefour;
                     this.selectedCarrefour1Label.setText("Carrefour 1 : " + carrefour.getLibellecarrefour());
 
-                } else if(this.numberOfSelectedCarrefours == 1) {
+                } else if (this.numberOfSelectedCarrefours == 1) {
                     this.selectedCarrefour2 = carrefour;
                     this.selectedCarrefour2Label.setText("Carrefour 2 : " + carrefour.getLibellecarrefour());
 
@@ -220,9 +220,9 @@ public class GrapheFXMLController implements Initializable, MapComponentInitiali
         }
     }
 
-    private void initializeAlgorithmeMarkers(List <Carrefour> carrefours) {
+    private void initializeAlgorithmeMarkers(List<Carrefour> carrefours) {
         this.deleteAllMarkers();
-        for(Carrefour carrefour : carrefours) {
+        for (Carrefour carrefour : carrefours) {
             // Position du carrefour
             this.carrefourLocation = new LatLong(carrefour.getCoordY(), carrefour.getCoordX());
             // Ajout du marker sur la carte

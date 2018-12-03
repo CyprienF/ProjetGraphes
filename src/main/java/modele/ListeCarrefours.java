@@ -18,7 +18,7 @@ public class ListeCarrefours {
         this.mesCarrefours = new ArrayList<Carrefour>();
     }
 
-    public ListeCarrefours (ListeCarrefours listeCarrefours){
+    public ListeCarrefours(ListeCarrefours listeCarrefours) {
         this.mesCarrefours = new ArrayList<Carrefour>();
         for (Carrefour carrefour : listeCarrefours.getMesCarrefours()) {
             this.mesCarrefours.add(new Carrefour(carrefour));
@@ -32,7 +32,7 @@ public class ListeCarrefours {
      * @return
      */
     public boolean initialisationListeCarrefours() {
-        String filename= "./src/main/resources/adr_voie_lieu.adrcarrefour.json";
+        String filename = "./src/main/resources/adr_voie_lieu.adrcarrefour.json";
         try {
             Object obj = new JSONParser().parse(new FileReader(filename));
             JSONObject jsonObject = (JSONObject) obj;
@@ -42,12 +42,12 @@ public class ListeCarrefours {
             JSONObject geometry;
             JSONArray coordinates;
             Carrefour c;
-            for(int i=0; i<listeCareffours.size();i++){
-                carrefour =(JSONObject) listeCareffours.get(i);
+            for (int i = 0; i < listeCareffours.size(); i++) {
+                carrefour = (JSONObject) listeCareffours.get(i);
                 properties = (JSONObject) carrefour.get("properties");
                 geometry = (JSONObject) carrefour.get("geometry");
                 coordinates = (JSONArray) geometry.get("coordinates");
-                c= new Carrefour(i, (Double) coordinates.get(0), (Double) coordinates.get(1),(String) properties.get("libellecarrefour"), (String) properties.get("identtroncon"));
+                c = new Carrefour(i, (Double) coordinates.get(0), (Double) coordinates.get(1), (String) properties.get("libellecarrefour"), (String) properties.get("identtroncon"));
                 mesCarrefours.add(c);
             }
 
@@ -77,7 +77,7 @@ public class ListeCarrefours {
         return mesCarrefours;
     }
 
-    public boolean clearCarrefourList(){
+    public boolean clearCarrefourList() {
         this.mesCarrefours.clear();
         return true;
     }
