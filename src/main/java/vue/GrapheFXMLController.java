@@ -98,10 +98,20 @@ public class GrapheFXMLController implements Initializable, MapComponentInitiali
     @FXML
     private void launchAlgorithme(ActionEvent event) {
         if(this.selectedCarrefour1 != null && this.selectedCarrefour2 != null) {
-            algorithmes.cheminLePlusCourt(listeCarrefours, this.selectedCarrefour1, this.selectedCarrefour2, this.choiceAlgorithmes.getValue().toString());
+            long start = System.currentTimeMillis();
+
+            if(this.choiceAlgorithmes.getValue().toString().equals("Dijkstra")){
+                algorithmes.cheminLePlusCourt(listeCarrefours, this.selectedCarrefour1, this.selectedCarrefour2, this.choiceAlgorithmes.getValue().toString());
+            }else{
+                algorithmes.cheminLePlusCourtAStar(listeCarrefours, this.selectedCarrefour1, this.selectedCarrefour2, this.choiceAlgorithmes.getValue().toString());
+            }
+
+            long elapsedTimeMillis = System.currentTimeMillis()-start;
+            System.out.println(this.choiceAlgorithmes.getValue().toString()+ " a tourné pendant: "+(elapsedTimeMillis/1000F) +" seconde");
             this.deleteAllMarkers();
             this.selectedCarrefour2.addCarrefourPluscourtCHhemin(selectedCarrefour2);
             this.initializeAlgorithmeMarkers(this.selectedCarrefour2.getPlusCourtChemin());
+
             this.launched = true;
         }
     }

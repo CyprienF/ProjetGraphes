@@ -2,7 +2,7 @@ package modele;
 
 import java.util.*;
 
-public class Carrefour {
+public class Carrefour implements Comparable<Carrefour>{
     private int id;
     private double coordX;
     private double coordY;
@@ -165,11 +165,7 @@ public class Carrefour {
     }
 
     @Override
-    public boolean equals(Object other){
-        if (other == null) return false;
-        if (other == this) return true;
-        if (!(other instanceof Carrefour)) return false;
-        Carrefour carrefour = (Carrefour) other;
-        return carrefour.getId()== this.id;
+    public int compareTo(Carrefour o) {
+        return Integer.compare(this.getId(),o.getId());
     }
 }
