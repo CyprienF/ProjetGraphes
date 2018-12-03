@@ -33,7 +33,7 @@ public class Algorithmes {
                 Double distance = adjacent.getValue();
 
                 if((distance+carrefourCourant.getDistanceDeLaSource())<carrefourAdjacent.getDistanceDeLaSource()){
-                    calculerDistanceMinimum(carrefourAdjacent, carrefourCourant, fin, distance, algorithmeMethode);
+                    calculerDistanceMinimum(carrefourAdjacent, carrefourCourant, fin, distance);
                     carrefoursNonParcourus.add(carrefourAdjacent);
                 }
             }
@@ -64,7 +64,7 @@ public class Algorithmes {
                 Double distance = adjacent.getValue();
 
                 if((distance+carrefourCourant.getDistanceDeLaSource()+getHeuristique(carrefourAdjacent,fin))<carrefourAdjacent.getDistanceDeLaSource()){
-                    calculerDistanceMinimum(carrefourAdjacent, carrefourCourant, fin, distance, algorithmeMethode);
+                    calculerDistanceMinimum(carrefourAdjacent, carrefourCourant, fin, distance);
                     carrefoursNonParcourus.add(carrefourAdjacent);
                 }
             }
@@ -99,7 +99,7 @@ public class Algorithmes {
                 Double distance = adjacent.getValue();
 
                 if((distance+carrefourCourant.getDistanceDeLaSource())<carrefourAdjacent.getDistanceDeLaSource()){
-                    calculerDistanceMinimum(carrefourAdjacent, carrefourCourant, fin, distance, algorithmeMethode);
+                    calculerDistanceMinimum(carrefourAdjacent, carrefourCourant, fin, distance);
                     carrefoursNonParcourus.enqueue(carrefourAdjacent,carrefourAdjacent.getDistanceDeLaSource());
                 }
             }
@@ -159,10 +159,10 @@ public class Algorithmes {
      * @param carrefourCourant
      * @param distance
      */
-    private void calculerDistanceMinimum(Carrefour carrefourEvalue, Carrefour carrefourCourant, Carrefour carrefourFin, Double distance, String algorithmeMethode) {
+    private void calculerDistanceMinimum(Carrefour carrefourEvalue, Carrefour carrefourCourant, Carrefour carrefourFin, Double distance) {
         Double distanceCarrefourCourant = carrefourCourant.getDistanceDeLaSource();
 
-        if(algorithmeMethode.equals("Dijkstra")) {
+
 
             if (distanceCarrefourCourant + distance < carrefourEvalue.getDistanceDeLaSource()) {
                 carrefourEvalue.setDistanceDeLaSource(distanceCarrefourCourant + distance);
@@ -172,16 +172,7 @@ public class Algorithmes {
                 carrefourEvalue.setPlusCourtChemin(plusCoursChemin);
             }
 
-        } else {
-            double distancePrediteCarrefourFin = getHeuristique(carrefourEvalue, carrefourFin);
 
-            if (distanceCarrefourCourant + distance  < carrefourEvalue.getDistanceDeLaSource()) {
-                carrefourEvalue.setDistanceDeLaSource(distanceCarrefourCourant + distance );
-                LinkedList<Carrefour> plusCoursChemin = new LinkedList<Carrefour>(carrefourCourant.getPlusCourtChemin());
-                plusCoursChemin.add(carrefourCourant);
-                carrefourEvalue.setPlusCourtChemin(plusCoursChemin);
-            }
-        }
 
 
     }
