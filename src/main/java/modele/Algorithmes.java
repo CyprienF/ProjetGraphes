@@ -10,7 +10,8 @@ import static java.lang.Math.abs;
 public class Algorithmes {
 
     /**
-     * Retourne le chemin le plus court
+     * Retourne le chemin le plus court avec l'aglorithme de Djikstra
+     *
      *
      * @param graphe
      * @param source
@@ -28,10 +29,13 @@ public class Algorithmes {
             Carrefour carrefourCourant = getCarrefourPlusPetiteDistance(carrefoursNonParcourus);
             carrefoursNonParcourus.remove(carrefourCourant);
 
+            //On parcours tous les carrefours adjacent
             for (Map.Entry<Carrefour, Double> adjacent : carrefourCourant.getCarrefoursAdjacents().entrySet()) {
                 Carrefour carrefourAdjacent = adjacent.getKey();
                 Double distance = adjacent.getValue();
 
+                //Si c'est la premeières fois qu'on visite le carrefours en rentre dans la condition obligadoirement
+                //Si ce n'est pas la premeère fois on controle si la nouvelle distance trouvé est inférieur à l'ancienne distance
                 if ((distance + carrefourCourant.getDistanceDeLaSource()) < carrefourAdjacent.getDistanceDeLaSource()) {
                     calculerDistanceMinimum(carrefourAdjacent, carrefourCourant, fin, distance);
                     carrefoursNonParcourus.add(carrefourAdjacent);
@@ -44,9 +48,18 @@ public class Algorithmes {
             }
         }
         System.out.println("Intersection passée : " + iterationValue);
+        //retourne le graphe de départ aveec la liste des plus court chemin de chaque carrefours
         return graphe;
     }
 
+    /**
+     * Retourne le chemin le plus court avec l'aglorithme de A*
+     * @param graphe
+     * @param source
+     * @param fin
+     * @param algorithmeMethode
+     * @return
+     */
     public ListeCarrefours cheminLePlusCourtAStar(ListeCarrefours graphe, Carrefour source, Carrefour fin, String algorithmeMethode) {
         source.setDistanceDeLaSource(0.0);
         int iterationValue = 0;
@@ -59,10 +72,13 @@ public class Algorithmes {
             Carrefour carrefourCourant = getCarrefourPlusPetiteDistanceAvecHeuristique(carrefoursNonParcourus, fin);
             carrefoursNonParcourus.remove(carrefourCourant);
 
+            //On parcours tous les carrefours adjacent
             for (Map.Entry<Carrefour, Double> adjacent : carrefourCourant.getCarrefoursAdjacents().entrySet()) {
                 Carrefour carrefourAdjacent = adjacent.getKey();
                 Double distance = adjacent.getValue();
 
+                //Si c'est la premeières fois qu'on visite le carrefours en rentre dans la condition obligadoirement
+                //Si ce n'est pas la premeère fois on controle si la nouvelle distance trouvé est inférieur à l'ancienne distance
                 if ((distance + carrefourCourant.getDistanceDeLaSource() + getHeuristique(carrefourAdjacent, fin)) < carrefourAdjacent.getDistanceDeLaSource()) {
                     calculerDistanceMinimum(carrefourAdjacent, carrefourCourant, fin, distance);
                     carrefoursNonParcourus.add(carrefourAdjacent);
@@ -77,9 +93,18 @@ public class Algorithmes {
             }
         }
         System.out.println("Intersection passée : " + iterationValue);
+        //retourne le graphe de départ aveec la liste des plus court chemin de chaque carrefours
         return graphe;
     }
 
+    /**
+     *Retourne le chemin le plus court avec l'aglorithme de Dijkstra en utilisant le tas de fibonnaci
+     * @param graphe
+     * @param source
+     * @param fin
+     * @param algorithmeMethode
+     * @return
+     */
     public ListeCarrefours cheminLePlusCourtFibonacci(ListeCarrefours graphe, Carrefour source, Carrefour fin, String algorithmeMethode) {
         int iterationValue = 0;
 
@@ -91,18 +116,20 @@ public class Algorithmes {
         carrefoursNonParcourus.enqueue(source, source.getDistanceDeLaSource());
 
         while (!carrefoursNonParcourus.isEmpty()) {
-
             Carrefour carrefourCourant = carrefoursNonParcourus.dequeueMin().getValue();
 
+            //On parcours tous les carrefours adjacent
             for (Map.Entry<Carrefour, Double> adjacent : carrefourCourant.getCarrefoursAdjacents().entrySet()) {
                 Carrefour carrefourAdjacent = adjacent.getKey();
                 Double distance = adjacent.getValue();
-
+                //Si c'est la premeières fois qu'on visite le carrefours en rentre dans la condition obligadoirement
+                //Si ce n'est pas la premeère fois on controle si la nouvelle distance trouvé est inférieur à l'ancienne distance
                 if ((distance + carrefourCourant.getDistanceDeLaSource()) < carrefourAdjacent.getDistanceDeLaSource()) {
                     calculerDistanceMinimum(carrefourAdjacent, carrefourCourant, fin, distance);
                     carrefoursNonParcourus.enqueue(carrefourAdjacent, carrefourAdjacent.getDistanceDeLaSource());
                 }
             }
+
             iterationValue++;
             if (carrefourCourant == fin) {
                 System.out.println("Intersection passé :" + iterationValue);
@@ -110,7 +137,7 @@ public class Algorithmes {
             }
         }
         System.out.println("Intersection passée : " + iterationValue);
-
+        //retourne le graphe de départ aveec la liste des plus court chemin de chaque carrefours
         return graphe;
     }
 
@@ -119,7 +146,7 @@ public class Algorithmes {
      * Retourne le carrefour non visité qui a la plus petite distance
      *
      * @param carrefoursNonParcourus
-     * @return
+     * @return retourne le carrefour voisin avec la plus petite distance
      */
     private Carrefour getCarrefourPlusPetiteDistance(Set<Carrefour> carrefoursNonParcourus) {
         Carrefour carrefourPlusPetiteDistance = null;
@@ -137,6 +164,12 @@ public class Algorithmes {
         return carrefourPlusPetiteDistance;
     }
 
+    /**
+     *  Retourne le carrefour non visité qui a la plus petite distance en ajoutant le poids de l'heuristique
+     * @param carrefoursNonParcourus
+     * @param fin
+     * @return le carrefours le plus proche en prennant en compte l'heuristique
+     */
     private Carrefour getCarrefourPlusPetiteDistanceAvecHeuristique(Set<Carrefour> carrefoursNonParcourus, Carrefour fin) {
         Carrefour carrefourPlusPetiteDistance = null;
         double plusPetiteDistance = Double.MAX_VALUE;
@@ -170,7 +203,6 @@ public class Algorithmes {
             plusCoursChemin.add(carrefourCourant);
             carrefourEvalue.setPlusCourtChemin(plusCoursChemin);
         }
-
 
     }
 
