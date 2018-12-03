@@ -47,8 +47,6 @@ public class Algorithmes {
         return graphe;
     }
 
-
-
     public ListeCarrefours cheminLePlusCourtAStar(ListeCarrefours graphe, Carrefour source, Carrefour fin, String algorithmeMethode) {
         source.setDistanceDeLaSource(0.0);
         int iterationValue = 0;
@@ -81,6 +79,41 @@ public class Algorithmes {
         System.out.println("Intersection passée : "+iterationValue );
         return graphe;
     }
+
+    public ListeCarrefours cheminLePlusCourtFibonacci(ListeCarrefours graphe, Carrefour source, Carrefour fin, String algorithmeMethode) {
+        int iterationValue = 0;
+
+        source.setDistanceDeLaSource(0.0);
+
+        FibonacciHeap<Carrefour> carrefoursNonParcourus = new FibonacciHeap<>();
+        Set<Carrefour> carrefoursParcourus = new HashSet<Carrefour>();
+
+        carrefoursNonParcourus.enqueue(source,source.getDistanceDeLaSource());
+
+        while (!carrefoursNonParcourus.isEmpty()) {
+
+            Carrefour carrefourCourant =  carrefoursNonParcourus.dequeueMin().getValue();
+
+            for(Map.Entry<Carrefour, Double> adjacent : carrefourCourant.getCarrefoursAdjacents().entrySet()) {
+                Carrefour carrefourAdjacent = adjacent.getKey();
+                Double distance = adjacent.getValue();
+
+                if((distance+carrefourCourant.getDistanceDeLaSource())<carrefourAdjacent.getDistanceDeLaSource()){
+                    calculerDistanceMinimum(carrefourAdjacent, carrefourCourant, fin, distance, algorithmeMethode);
+                    carrefoursNonParcourus.enqueue(carrefourAdjacent,carrefourAdjacent.getDistanceDeLaSource());
+                }
+            }
+            iterationValue++;
+            if(carrefourCourant==fin){
+                System.out.println("Intersection passé :"+iterationValue );
+                return graphe;
+            }
+        }
+        System.out.println("Intersection passée : "+iterationValue );
+
+        return graphe;
+    }
+
 
     /**
      * Retourne le carrefour non visité qui a la plus petite distance
@@ -161,40 +194,6 @@ public class Algorithmes {
      */
     private double getHeuristique(Carrefour voisin, Carrefour fin) {
         return voisin.getDistanceBetweenCarrefours(fin);
-    }
-
-    public ListeCarrefours cheminLePlusCourtFibonacci(ListeCarrefours graphe, Carrefour source, Carrefour fin, String algorithmeMethode) {
-        int iterationValue = 0;
-
-        source.setDistanceDeLaSource(0.0);
-
-        FibonacciHeap<Carrefour> carrefoursNonParcourus = new FibonacciHeap<>();
-        Set<Carrefour> carrefoursParcourus = new HashSet<Carrefour>();
-
-        carrefoursNonParcourus.enqueue(source,source.getDistanceDeLaSource());
-
-        while (!carrefoursNonParcourus.isEmpty()) {
-
-            Carrefour carrefourCourant =  carrefoursNonParcourus.dequeueMin().getValue();
-
-            for(Map.Entry<Carrefour, Double> adjacent : carrefourCourant.getCarrefoursAdjacents().entrySet()) {
-                Carrefour carrefourAdjacent = adjacent.getKey();
-                Double distance = adjacent.getValue();
-
-                if((distance+carrefourCourant.getDistanceDeLaSource())<carrefourAdjacent.getDistanceDeLaSource()){
-                    calculerDistanceMinimum(carrefourAdjacent, carrefourCourant, fin, distance, algorithmeMethode);
-                    carrefoursNonParcourus.enqueue(carrefourAdjacent,carrefourAdjacent.getDistanceDeLaSource());
-                }
-            }
-            iterationValue++;
-            if(carrefourCourant==fin){
-                System.out.println("Intersection passé :"+iterationValue );
-                return graphe;
-            }
-        }
-        System.out.println("Intersection passée : "+iterationValue );
-
-        return graphe;
     }
 
 

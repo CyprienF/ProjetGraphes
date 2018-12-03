@@ -18,6 +18,7 @@ import modele.Carrefour;
 import modele.ListeCarrefours;
 import netscape.javascript.JSObject;
 
+import java.math.BigDecimal;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -70,12 +71,16 @@ public class GrapheFXMLController implements Initializable, MapComponentInitiali
     private boolean launched = false;
 
     @FXML
+    private Label timeAlgos;
+
+    @FXML
     private void clearSelectedCarrefours(ActionEvent event) {
         this.resetButton.setVisible(false);
         this.launchAlgorithme.setVisible(false);
         this.rectangle.setVisible(false);
         this.numberOfSelectedCarrefours = 0;
         this.choiceAlgorithmes.setVisible(false);
+        this.timeAlgos.setText("");
 
         if(this.selectedCarrefour1 != null) {
             this.selectedCarrefour1 = null;
@@ -102,12 +107,15 @@ public class GrapheFXMLController implements Initializable, MapComponentInitiali
 
             if(this.choiceAlgorithmes.getValue().toString().equals("Dijkstra")){
                 algorithmes.cheminLePlusCourt(listeCarrefours, this.selectedCarrefour1, this.selectedCarrefour2, this.choiceAlgorithmes.getValue().toString());
+            }else if(this.choiceAlgorithmes.getValue().toString().equals("Dijkstra Fibonacci")){
+                algorithmes.cheminLePlusCourtFibonacci(listeCarrefours, this.selectedCarrefour1, this.selectedCarrefour2, "Dijkstra");
             }else{
                 algorithmes.cheminLePlusCourtAStar(listeCarrefours, this.selectedCarrefour1, this.selectedCarrefour2, this.choiceAlgorithmes.getValue().toString());
             }
 
             long elapsedTimeMillis = System.currentTimeMillis()-start;
-            System.out.println(this.choiceAlgorithmes.getValue().toString()+ " a tourné pendant: "+(elapsedTimeMillis/1000F) +" seconde");
+            BigDecimal timeSpent= (new BigDecimal(elapsedTimeMillis)).divide(new BigDecimal(1000));
+            this.timeAlgos.setText(this.choiceAlgorithmes.getValue().toString()+ " a tourné pendant: "+timeSpent+" seconde");
             this.deleteAllMarkers();
             this.selectedCarrefour2.addCarrefourPluscourtCHhemin(selectedCarrefour2);
             this.initializeAlgorithmeMarkers(this.selectedCarrefour2.getPlusCourtChemin());
@@ -130,7 +138,7 @@ public class GrapheFXMLController implements Initializable, MapComponentInitiali
         this.rectangle.setVisible(false);
         this.launchAlgorithme.setVisible(false);
 
-        this.choiceAlgorithmes.getItems().addAll(FXCollections.observableArrayList("Dijkstra", "A*"));
+        this.choiceAlgorithmes.getItems().addAll(FXCollections.observableArrayList("Dijkstra","Dijkstra Fibonacci", "A*"));
         this.choiceAlgorithmes.getSelectionModel().selectFirst();
         this.choiceAlgorithmes.setVisible(false);
     }

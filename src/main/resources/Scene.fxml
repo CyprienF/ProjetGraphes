@@ -17,6 +17,7 @@
             <Label fx:id="selectedCarrefour2Label" layoutX="15.0" layoutY="75.0" text="selectedCarrefour2" />
             <ChoiceBox fx:id="choiceAlgorithmes" layoutX="15.0" layoutY="20.0" prefWidth="150.0" />
             <Button fx:id="launchAlgorithme" layoutX="15.0" layoutY="100.0" mnemonicParsing="false" text="Button" onAction="#launchAlgorithme" />
+             <Label fx:id="timeAlgos" layoutX="15.0" layoutY="120.0" text="" />
          </children>
         </GoogleMapView>
     </children>
